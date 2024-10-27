@@ -1,7 +1,17 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { BrandsService } from './brands.service';
-import { CreateBrandDto } from './brand.dto';
+import { CreateBrandDto, UpdateBrandDto } from './brand.dto';
 import { response } from 'express';
 
 @ApiTags('Brands')
@@ -11,22 +21,35 @@ export class BrandsController {
 
   @Post()
   async create(@Body() createBrandDto: CreateBrandDto) {
-    try {
-      const newBrand = await this.brandService.create(createBrandDto);
-      return response.status(HttpStatus.CREATED).json({
-        message: 'Brand has been created successfully',
-        newBrand,
-      });
-    } catch (error) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        message: 'Error: Brand not created!',
-        error,
-      });
-    }
+    return this.brandService.create(createBrandDto);
   }
 
   @Post('/create-many')
-  createMany(@Body() createBrandDto: CreateBrandDto[]) {
+  async createMany(@Body() createBrandDto: CreateBrandDto[]) {
     return this.brandService.createMany(createBrandDto);
+  }
+
+  @Get()
+  async findMany() {
+    console.log('getgig');
+    return this.brandService.findAll();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.brandService.findOne(id);
+  }
+
+  @Patch(':id')
+  async updateOne(
+    @Body() updateBrandDto: UpdateBrandDto,
+    @Param('id') id: string,
+  ) {
+    return this.brandService.update(id, updateBrandDto);
+  }
+
+  @Delete(':id')
+  async removeOne(@Param('id') id: string) {
+    return this.brandService.remove(id);
   }
 }

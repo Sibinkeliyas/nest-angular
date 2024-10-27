@@ -8,7 +8,7 @@ import { Brands } from './brands.schema';
 @Schema({ timestamps: true })
 export class Products {
   @Prop({ required: true })
-  productName: string;
+  name: string;
 
   @Prop()
   price: number;
@@ -17,13 +17,13 @@ export class Products {
   productImage: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Categories' })
-  category: Categories;
+  categoryId: Categories;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Brands ' })
-  brand: Brands;
+  brandId: Brands;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId }], ref: 'Sizes' })
-  sizes: Sizes[];
+  availableSizes: Sizes[];
 
   @Prop()
   rating: number;
@@ -31,9 +31,14 @@ export class Products {
   @Prop({ default: false })
   sale: boolean;
 
+  @Prop()
+  images: string[]
+
   @Prop({ default: now() })
   addedDate: Date;
 
   @Prop({ default: now() })
   updatedDate: Date;
 }
+
+export const productSchema = SchemaFactory.createForClass(Products);

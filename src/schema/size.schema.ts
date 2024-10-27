@@ -1,8 +1,9 @@
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 
+@Schema()
 export class Sizes {
   @Prop({ required: true })
-  size: string;
+  sizeName: string;
 }
 
 export const sizeSchema = SchemaFactory.createForClass(Sizes);

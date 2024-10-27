@@ -2,11 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import * as express from 'express'
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors({ origin: 'https://localhost:4200' });
+  app.use('/uploads', express.static(join(process.cwd(), 'uploads'))); 
 
   const config = new DocumentBuilder()
     .setTitle('Angular ecommerce')

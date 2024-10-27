@@ -7,9 +7,9 @@ import { IBrands } from 'src/interface/brand.inteface';
 @Injectable()
 export class BrandsService {
   constructor(@InjectModel('Brands') private brandModel: Model<IBrands>) {}
+
   async create(createBrandDto: CreateBrandDto): Promise<IBrands> {
-    const newBrand = await new this.brandModel(createBrandDto);
-    return newBrand.save();
+    return this.brandModel.create(createBrandDto)
   }
 
   async createMany(createBrandDto: CreateBrandDto[]): Promise<IBrands[]> {
@@ -17,19 +17,19 @@ export class BrandsService {
     return newBrands;
   }
 
-  findAll(): Promise<IBrands[]> {
+  async findAll(): Promise<IBrands[]> {
     return this.brandModel.find();
   }
 
-  findOne(id: number): Promise<IBrands> {
+  findOne(id: string): Promise<IBrands> {
     return this.brandModel.findById(id);
   }
 
-  update(id: number, updateBrandDto: UpdateBrandDto): Promise<IBrands> {
+  update(id: string, updateBrandDto: UpdateBrandDto): Promise<IBrands> {
     return this.brandModel.findByIdAndUpdate(id, updateBrandDto);
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.brandModel.deleteOne({ _id: id });
   }
 }

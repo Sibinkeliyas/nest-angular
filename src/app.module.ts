@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { ProductsModule } from './admin/products/products.module';
 import { BrandsModule } from './admin/brands/brands.module';
 import { BrandSchema } from './schema/brands.schema';
+import { CategoryModule } from './admin/category/category.module';
+import { SizesModule } from './admin/sizes/sizes.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { BrandSchema } from './schema/brands.schema';
     MongooseModule.forFeature([{ name: 'Brands', schema: BrandSchema }]),
     ProductsModule,
     BrandsModule,
+    CategoryModule,
+    SizesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
