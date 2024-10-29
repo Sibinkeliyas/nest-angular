@@ -24,7 +24,7 @@ const uploadDir = join(process.cwd(), 'uploads');
         },
       }),
       fileFilter: (req, file, cb) => {
-        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/avif') {
           cb(null, true);
         } else {
           cb(new Error('Only images are allowed...'), false);

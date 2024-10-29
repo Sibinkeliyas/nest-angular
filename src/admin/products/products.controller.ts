@@ -32,7 +32,10 @@ export class ProductsController {
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
     const images = files.map((file) => file.filename);
-    return this.productsService.create({ ...createProductDto, images });
+    return this.productsService.create({
+      ...createProductDto,
+      images,
+    });
   }
 
   @Post('create-many')

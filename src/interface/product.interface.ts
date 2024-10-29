@@ -5,6 +5,6 @@ export interface IProducts {
   price: number;
   categoryId: string;
   brandId: string;
-  availableSizes: string[];
+  availableSizes: string
   image: string[];
 }

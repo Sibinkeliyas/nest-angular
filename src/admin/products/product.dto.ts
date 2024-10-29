@@ -3,7 +3,7 @@ export class CreateProductDto {
   price: number;
   categoryId: string;
   brandId: string;
-  availableSizes: string[];
+  availableSizes: string;
   rating: number;
   sale: boolean;
   images: string[];

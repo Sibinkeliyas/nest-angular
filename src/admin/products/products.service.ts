@@ -11,7 +11,8 @@ export class ProductsService {
   ) {}
 
   create(createProductDto: CreateProductDto): Promise<IProducts> {
-    return this.ProductSchema.create(createProductDto);
+    const availableSizes = createProductDto.availableSizes.split(',');
+    return this.ProductSchema.create({ ...createProductDto, availableSizes });
   }
 
   createMany(createProductDto: CreateProductDto[]): Promise<IProducts[]> {

@@ -8,16 +8,17 @@ import { BrandsModule } from './admin/brands/brands.module';
 import { BrandSchema } from './schema/brands.schema';
 import { CategoryModule } from './admin/category/category.module';
 import { SizesModule } from './admin/sizes/sizes.module';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.DATABASE_URL),
-    MongooseModule.forFeature([{ name: 'Brands', schema: BrandSchema }]),
     ProductsModule,
     BrandsModule,
     CategoryModule,
     SizesModule,
+    AuthenticationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
