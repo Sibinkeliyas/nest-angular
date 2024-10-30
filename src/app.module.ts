@@ -9,6 +9,7 @@ import { BrandSchema } from './schema/brands.schema';
 import { CategoryModule } from './admin/category/category.module';
 import { SizesModule } from './admin/sizes/sizes.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
     CategoryModule,
     SizesModule,
     AuthenticationModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],
