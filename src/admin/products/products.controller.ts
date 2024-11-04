@@ -15,9 +15,7 @@ import { ProductsService } from './products.service';
 import { CreateProductDto, UpdateProductDto } from './product.dto';
 import { ApiTags } from '@nestjs/swagger';
 import {
-  FileInterceptor,
   FilesInterceptor,
-  MulterModule,
 } from '@nestjs/platform-express';
 
 @ApiTags('products')
@@ -59,6 +57,11 @@ export class ProductsController {
   @Get()
   findAll() {
     return this.productsService.findAll();
+  }
+
+  @Get('/find-latest-products')
+  findTopSellers(){
+    return this.productsService.findTopSellers()
   }
 
   @Get(':id')

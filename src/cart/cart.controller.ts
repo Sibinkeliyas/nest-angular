@@ -47,7 +47,7 @@ export class CartController {
 
   @Get()
   findAll() {
-    return this.cartService.findAll();
+    return this.cartService.findAll('1');
   }
 
   @Get(':id')

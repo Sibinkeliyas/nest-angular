@@ -23,6 +23,10 @@ export class ProductsService {
     return this.ProductSchema.find();
   }
 
+  findTopSellers(): Promise<IProducts[]> {
+    return this.ProductSchema.find({});
+  }
+
   findOne(id: string): Promise<IProducts> {
     return this.ProductSchema.findById(id);
   }
