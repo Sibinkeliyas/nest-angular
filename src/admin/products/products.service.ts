@@ -24,7 +24,11 @@ export class ProductsService {
   }
 
   findTopSellers(): Promise<IProducts[]> {
-    return this.ProductSchema.find({});
+    return this.ProductSchema.find({ sale: true });
+  }
+
+  findFilteredProducts(): Promise<IProducts[]> {
+    return this.ProductSchema.find({categoryId : ''})
   }
 
   findOne(id: string): Promise<IProducts> {

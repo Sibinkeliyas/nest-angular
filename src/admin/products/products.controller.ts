@@ -59,9 +59,14 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
-  @Get('/find-latest-products')
-  findTopSellers(){
-    return this.productsService.findTopSellers()
+  @Get('/find-sale-products')
+  findTopSellers() {
+    return this.productsService.findTopSellers();
+  }
+
+  @Get('/find-filtered-products')
+  findFilteredProducts() {
+    return this.productsService.findTopSellers();
   }
 
   @Get(':id')
