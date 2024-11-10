@@ -19,16 +19,30 @@ export class ProductsService {
     return this.ProductSchema.insertMany(createProductDto);
   }
 
-  findAll(): Promise<IProducts[]> {
-    return this.ProductSchema.find();
+  findAll(limit = 0, perPage = 10): Promise<IProducts[]> {
+    return this.ProductSchema.find()
+      .skip(Number(limit) * Number(perPage))
+      .limit(Number(perPage));
+  }
+
+  findCount(filter = {}) {
+    return this.ProductSchema.find(filter).countDocuments();
   }
 
   findTopSellers(): Promise<IProducts[]> {
     return this.ProductSchema.find({ sale: true });
   }
 
-  findFilteredProducts(): Promise<IProducts[]> {
-    return this.ProductSchema.find({categoryId : ''})
+  findFilteredProducts(
+    filter: any,
+    sort: any = 1,
+    limit = 0,
+    perPage = 10,
+  ): Promise<IProducts[]> {
+    return this.ProductSchema.find(filter)
+      .skip(limit)
+      .limit(perPage)
+      .sort({ price: sort });
   }
 
   findOne(id: string): Promise<IProducts> {

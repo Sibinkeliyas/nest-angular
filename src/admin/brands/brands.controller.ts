@@ -31,7 +31,6 @@ export class BrandsController {
 
   @Get()
   async findMany() {
-    console.log('getgig');
     return this.brandService.findAll();
   }
 
