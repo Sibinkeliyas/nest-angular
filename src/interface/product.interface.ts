@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 export interface IProducts {
   name: string;
   rating: number;
@@ -10,10 +12,10 @@ export interface IProducts {
 }
 
 export interface ICartItem {
-  productId: string;
+  productId: mongoose.Types.ObjectId;
   quantity: number;
 }
 export interface ICart {
-  userId: string;
+  userId: mongoose.Types.ObjectId;
   products: ICartItem[];
 }

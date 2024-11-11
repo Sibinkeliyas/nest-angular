@@ -6,38 +6,48 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { ICart } from 'src/interface/product.interface';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/authentication/auth.guard';
+import mongoose from 'mongoose';
 
 @ApiTags('Cart')
+@UseGuards(AuthGuard)
 @Controller('cart')
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @Post()
-  async create(@Body() createCartDto: CreateCartDto): Promise<any> {
-    const userCart = await this.cartService.findOne('1');
+  async create(
+    @Request() req,
+    @Body() createCartDto: CreateCartDto,
+  ): Promise<any> {
+    const userCart = await this.cartService.findOne(req.user.id);
     if (userCart) {
       const isProductExist = userCart.products.find(
-        (product) => product.productId === createCartDto.productId,
+        (product) =>
+          product.productId ===
+          new mongoose.Types.ObjectId(createCartDto.productId),
       );
       if (isProductExist)
         return this.cartService.updateQuantity(
-          '1',
+          req.user.id,
           createCartDto.productId,
           createCartDto.quantity,
         );
       else return this.cartService.updateCart(createCartDto);
     }
     const cartData: ICart = {
-      userId: '1',
+      userId: new mongoose.Types.ObjectId(req.user.id),
       products: [
         {
-          productId: createCartDto.productId,
+          productId: new mongoose.Types.ObjectId(createCartDto.productId),
           quantity: createCartDto.quantity,
         },
       ],
@@ -46,8 +56,8 @@ export class CartController {
   }
 
   @Get()
-  findAll() {
-    return this.cartService.findAll('1');
+  findAll(@Request() req) {
+    return this.cartService.findAll(req.user.id);
   }
 
   @Get(':id')

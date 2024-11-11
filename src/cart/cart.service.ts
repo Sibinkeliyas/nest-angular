@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { ICart } from 'src/interface/product.interface';
 
 @Injectable()
@@ -21,17 +21,17 @@ export class CartService {
       },
       {
         $lookup: {
-          from : 'products',
+          from: 'products',
           localField: '_id',
           foreignField: 'products.productId',
-          as: 'products'
-        }
+          as: 'products',
+        },
       },
     ]);
   }
 
   findOne(id: string): Promise<ICart> {
-    return this.CartSchema.findOne({ userId: id });
+    return this.CartSchema.findOne({ userId: new mongoose.Types.ObjectId(id) });
   }
 
   update(id: string, updateCartDto: ICart) {
