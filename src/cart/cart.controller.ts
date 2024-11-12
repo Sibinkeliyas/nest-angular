@@ -30,10 +30,10 @@ export class CartController {
   ): Promise<any> {
     const userCart = await this.cartService.findOne(req.user.id);
     if (userCart) {
-      const isProductExist = userCart.products.find(
-        (product) =>
-          product.productId ===
+      const isProductExist = userCart.products.find((product) =>
+        new mongoose.Types.ObjectId(product.productId).equals(
           new mongoose.Types.ObjectId(createCartDto.productId),
+        ),
       );
       if (isProductExist)
         return this.cartService.updateQuantity(
@@ -41,7 +41,7 @@ export class CartController {
           createCartDto.productId,
           createCartDto.quantity,
         );
-      else return this.cartService.updateCart(createCartDto);
+      else return this.cartService.updateCart(req.user.id, createCartDto);
     }
     const cartData: ICart = {
       userId: new mongoose.Types.ObjectId(req.user.id),

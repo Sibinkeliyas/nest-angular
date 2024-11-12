@@ -6,7 +6,7 @@ export class CreateUserDto {
   @MaxLength(20)
   readonly userName: string;
 
-  @MaxLength(20)
+  @MaxLength(50)
   @IsNotEmpty()
   @IsEmail()
   readonly email: string;

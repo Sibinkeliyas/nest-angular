@@ -40,15 +40,25 @@ export class CartService {
 
   updateQuantity(userId: string, productId: string, quantity: number) {
     return this.CartSchema.updateOne(
-      { userId, 'products.productId': productId },
+      {
+        userId: new mongoose.Types.ObjectId(userId),
+        'products.productId': new mongoose.Types.ObjectId(productId),
+      },
       { $inc: { 'products.$.quantity': quantity } },
     );
   }
 
-  updateCart(data: CreateCartDto) {
+  updateCart(userId: string, data: CreateCartDto) {
     return this.CartSchema.updateOne(
-      { userId: data.userId },
-      { $push: { products: { productId: data.productId, quantity: 1 } } },
+      { userId: new mongoose.Types.ObjectId(userId) },
+      {
+        $push: {
+          products: {
+            productId: new mongoose.Types.ObjectId(data.productId),
+            quantity: 1,
+          },
+        },
+      },
     );
   }
 

@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/createUser.dto';
 import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from './auth.guard';
 
 @ApiTags('authentication')
 @Controller('authentication')
@@ -15,6 +24,11 @@ export class AuthenticationController {
   @Post()
   async createUser(@Body() user: CreateUserDto) {
     try {
+      const isUserAlreadyExist = await this.authService.findUserByEmail(
+        user.email,
+      );
+      if (isUserAlreadyExist)
+        return { success: false, message: 'Email already exist' };
       const createUser = await this.authService.create(user);
       const payload = {
         id: createUser._id,
@@ -23,8 +37,11 @@ export class AuthenticationController {
       };
 
       return {
-        ...payload,
-        access_token: await this.jwtService.signAsync(payload),
+        success: true,
+        data: {
+          ...payload,
+          access_token: await this.jwtService.signAsync(payload),
+        },
       };
     } catch (error) {
       return error;
@@ -45,8 +62,11 @@ export class AuthenticationController {
       };
       if (user) {
         return {
-          ...payload,
-          access_token: await this.jwtService.signAsync(payload),
+          success: true,
+          data: {
+            ...payload,
+            access_token: await this.jwtService.signAsync(payload),
+          },
         };
       } else {
         return { success: false, message: 'Could find user' };
@@ -54,5 +74,10 @@ export class AuthenticationController {
     } catch (error) {
       return error;
     }
+  }
+  @UseGuards(AuthGuard)
+  @Get('/get-user')
+  async getUserData(@Request() req) {
+    return this.authService.findUserById(req.user.id);
   }
 }
