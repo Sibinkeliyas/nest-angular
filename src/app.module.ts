@@ -11,6 +11,7 @@ import { SizesModule } from './admin/sizes/sizes.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { CartModule } from './cart/cart.module';
 import { OrdersModule } from './orders/orders.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { OrdersModule } from './orders/orders.module';
     SizesModule,
     AuthenticationModule,
     CartModule,
+    OrderModule,
     // OrdersModule,
   ],
   controllers: [AppController],

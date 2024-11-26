@@ -20,8 +20,32 @@ export class Orders {
   @Prop({ required: true, type: mongoose.Types.ObjectId, ref: 'users' })
   userId: mongoose.Types.ObjectId;
 
-  @Prop({ required: true, type: mongoose.Types.ObjectId, ref: 'address' })
-  addressId: mongoose.Types.ObjectId;
+  @Prop({ required: true, type: String })
+  firstName: string;
+
+  @Prop({ required: true, type: String })
+  lastName: string;
+
+  @Prop({ required: true, type: String })
+  country: string;
+
+  @Prop({ required: true, type: String })
+  address: string;
+
+  @Prop({ required: true, type: String })
+  city: string;
+
+  @Prop({ required: true, type: String })
+  state: string;
+
+  @Prop({ required: true, type: String })
+  postCode: string;
+
+  @Prop({ required: true, type: String })
+  phone: string;
+
+  @Prop({ required: true, type: String })
+  email: string;
 
   @Prop({ type: mongoose.Types.ObjectId, ref: 'coupons' })
   couponId: mongoose.Types.ObjectId;
@@ -36,4 +60,4 @@ export class Orders {
   products: Product[];
 }
 
-export const orderSchema = SchemaFactory.createForClass(Orders);
+export const OrderSchema = SchemaFactory.createForClass(Orders);

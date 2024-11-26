@@ -28,6 +28,8 @@ export class CartController {
     @Request() req,
     @Body() createCartDto: CreateCartDto,
   ): Promise<any> {
+    console.log(createCartDto);
+    
     const userCart = await this.cartService.findOne(req.user.id);
     if (userCart) {
       const isProductExist = userCart.products.find((product) =>
@@ -65,9 +67,13 @@ export class CartController {
     return this.cartService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
-    // return this.cartService.update(id, updateCartDto);
+  @Patch()
+  async update(@Request() req, @Body() updateCartDto: UpdateCartDto[]) {
+    await Promise.all(
+      updateCartDto.map((item) => {
+        return this.cartService.updateCartQuantity(req.user.id, item);
+      }),
+    );
   }
 
   @Delete(':id')

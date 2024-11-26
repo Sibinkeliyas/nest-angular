@@ -46,7 +46,6 @@ export class ProductsController {
     @Body() body: CreateProductDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    const fileUrl = `http://localhost:3000/uploads`;
     return {
       url: files,
       body: body,
@@ -69,6 +68,11 @@ export class ProductsController {
   @Get('/find-sale-products')
   findTopSellers() {
     return this.productsService.findTopSellers();
+  }
+
+  @Get('/:productId')
+  getProduct(@Param('productId') productId: string) {
+    return this.productsService.findOne(productId)
   }
 
   @Get('/find-filtered-products')

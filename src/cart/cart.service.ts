@@ -14,7 +14,7 @@ export class CartService {
   findAll(userId: string) {
     return this.CartSchema.aggregate([
       {
-        $match: { userId },
+        $match: { userId: new mongoose.Types.ObjectId(userId) },
       },
       {
         $unwind: '$products',
@@ -22,9 +22,25 @@ export class CartService {
       {
         $lookup: {
           from: 'products',
-          localField: '_id',
-          foreignField: 'products.productId',
-          as: 'products',
+          localField: 'products.productId',
+          foreignField: '_id',
+          as: 'productsDetails',
+        },
+      },
+      {
+        $unwind: '$productsDetails',
+      },
+      {
+        $addFields: {
+          quantity: '$products.quantity',
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          userId: 1,
+          quantity: 1,
+          productsDetails: 1,
         },
       },
     ]);
@@ -55,8 +71,22 @@ export class CartService {
         $push: {
           products: {
             productId: new mongoose.Types.ObjectId(data.productId),
-            quantity: 1,
+            quantity: data.quantity,
           },
+        },
+      },
+    );
+  }
+
+  updateCartQuantity(userId: string, data: any) {
+    return this.CartSchema.updateOne(
+      {
+        userId: new mongoose.Types.ObjectId(userId),
+        'products.productId': new mongoose.Types.ObjectId(data.productId),
+      },
+      {
+        $set: {
+          'products.$.quantity': data.quantity,
         },
       },
     );
